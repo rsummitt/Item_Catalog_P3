@@ -51,5 +51,18 @@ def delete_item(item_name):
     return 'Delete Item'
 
 
+@app.route('/catalog.json')
+def categories_json():
+    categories = session.query(Category).all()
+    results = []
+    for c in categories:
+        result = {'id': c.id, 'name': c.name, 'Items': []}
+        for i in session.query(Item).filter_by(category=c):
+            result['Items'].append(i.serialize)
+        results.append(result)
+    return jsonify(Categories=results)
+
+
 if __name__ == '__main__':
-    app.run()
+    app.debug = True
+    app.run(host='0.0.0.0', port=8080)
