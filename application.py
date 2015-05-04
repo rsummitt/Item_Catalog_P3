@@ -20,6 +20,18 @@ def get_catalog():
     return render_template('categories.html', categories=categories)
 
 
+@app.route('/catalog/category/add', methods=['GET', 'POST'])
+def add_category():
+    if request.method == 'POST':
+        if request.form['name']:
+            category = Category(name=request.form['name'])
+            session.add(category)
+            session.commit()
+            return redirect(url_for('get_catalog'))
+    else:
+        return render_template('add_category.html')
+
+
 @app.route('/catalog/<int:category_id>/delete')
 def delete_category(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
