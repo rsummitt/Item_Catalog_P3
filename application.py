@@ -16,16 +16,18 @@ session = DBSession()
 @app.route('/')
 @app.route('/catalog')
 def get_catalog():
-    return 'Get Catalog'
+    categories = session.query(Category).all()
+    return render_template('categories.html', categories=categories)
 
 
-@app.route('/catalog/<string:category_name>/items')
-def get_category_items(category_name):
-    category = session.query(Category).filter_by(name=category_name).one()
+@app.route('/catalog/<int:category_id>/items')
+def get_category_items(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
     category_items = session.query(Item).filter_by(category_id=category.id).all()
-    return category_items
+    return render_template('category_items.html', category=category, category_items=category_items)
 
 
+# Todo: Refactor this to use an id not a string
 @app.route('/catalog/<string:category_name>/<string:item_name>')
 def get_item(category_name, item_name):
     category = session.query(Category).filter_by(name=category_name).one()
@@ -33,6 +35,7 @@ def get_item(category_name, item_name):
     return item
 
 
+# Todo: Refactor this to use an id not a string
 @app.route('/catalog/<string:item_name>/edit', methods=['GET', 'POST'])
 def edit_item(item_name):
     item = session.query(Item).filter_by(name=item_name).one()
@@ -43,15 +46,18 @@ def edit_item(item_name):
             item.category = request.form['category']
             return redirect(url_for('get_catalog'))
     else:
+        # Todo: Create edit_item.html form
         return render_template('edit_item.html', item=item)
 
 
+# Todo: Refactor this to use an id not a string
 @app.route('/catalog/<string:item_name>/delete')
 def delete_item(item_name):
+    # Todo: Implement delete item
     return 'Delete Item'
 
 
-@app.route('/catalog.json')
+@app.route('/api/catalog.json')
 def categories_json():
     categories = session.query(Category).all()
     results = []
