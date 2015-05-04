@@ -45,7 +45,7 @@ def add_item():
             return redirect(url_for('get_item', category_id=category.id, item_id=item.id))
     else:
         categories = session.query(Category).all()
-        return render_template('add_item.html', categories=categories, item=item)
+        return render_template('add_item.html', categories=categories)
 
 
 @app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
