@@ -28,10 +28,10 @@ def get_category_items(category_id):
 
 
 # Todo: Refactor this to use an id not a string
-@app.route('/catalog/<string:category_name>/<string:item_name>')
-def get_item(category_name, item_name):
-    category = session.query(Category).filter_by(name=category_name).one()
-    item = session.query(Item).filter_by(category_id=category.id, name=item_name).one()
+@app.route('/catalog/<int:category_id>/<int:item_id>')
+def get_item(category_id, item_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    item = session.query(Item).filter_by(category_id=category.id, item_id=item_id).one()
     return item
 
 
