@@ -8,30 +8,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Create a few categories
-football_cat = Category(name='Football')
-baseball_cat = Category(name='Baseball')
-soccer_cat = Category(name='Soccer')
-boxing_cat = Category(name='Boxing')
-
-# Football Items
-helmet = Item(name='Helmet', description='Protects head', category=football_cat)
-shoulder_pads = Item(name='Shoulder Pads', description='Protects shoulders', category=football_cat)
-thigh_pads = Item(name='Thigh Pads', description='Protects thighs', category=football_cat)
-# Baseball Items
-batting_gloves = Item(name='Batting Gloves', description='Provides better grip', category=baseball_cat)
-bat = Item(name='Bat', description='Hit the ball with this', category=baseball_cat)
-baseball_pants = Item(name='Baseball Pants', description='Protects legs while sliding', category=baseball_cat)
-# Soccer Items
-shin_guards = Item(name='Shin Guards', description='Protects Shins', category=soccer_cat)
-goalie_gloves = Item(name='Goalie Gloves', description='Protects Goalies hands while blocking', category=soccer_cat)
-cleats = Item(name='Cleats', description='Cleats used for Soccer', category=soccer_cat)
-# Boxing Items
-hand_wraps = Item(name='Hand Wraps', description='Stabilizes wrist', category=boxing_cat)
-sparring_gloves = Item(name='Sparring Gloves', description='Padded gloves for sparring', category=boxing_cat)
-heavy_bag = Item(name='Heavy Bag', description='Bag used for training', category=boxing_cat)
 
 if __name__ == '__main__':
+
+    # Create a few categories
+    football_cat = Category(name='Football')
+    baseball_cat = Category(name='Baseball')
+    soccer_cat = Category(name='Soccer')
+    boxing_cat = Category(name='Boxing')
 
     # Add categories
     session.add(football_cat)
@@ -39,6 +23,23 @@ if __name__ == '__main__':
     session.add(soccer_cat)
     session.add(boxing_cat)
     session.commit()
+
+    # Football Items
+    helmet = Item(name='Helmet', description='Protects head', category_id=football_cat.id)
+    shoulder_pads = Item(name='Shoulder Pads', description='Protects shoulders', category_id=football_cat.id)
+    thigh_pads = Item(name='Thigh Pads', description='Protects thighs', category_id=football_cat.id)
+    # Baseball Items
+    batting_gloves = Item(name='Batting Gloves', description='Provides better grip', category_id=baseball_cat.id)
+    bat = Item(name='Bat', description='Hit the ball with this', category_id=baseball_cat.id)
+    baseball_pants = Item(name='Baseball Pants', description='Protects legs while sliding', category_id=baseball_cat.id)
+    # Soccer Items
+    shin_guards = Item(name='Shin Guards', description='Protects Shins', category_id=soccer_cat.id)
+    goalie_gloves = Item(name='Goalie Gloves', description='Protects Goalies hands while blocking', category_id=soccer_cat.id)
+    cleats = Item(name='Cleats', description='Cleats used for Soccer', category_id=soccer_cat.id)
+    # Boxing Items
+    hand_wraps = Item(name='Hand Wraps', description='Stabilizes wrist', category_id=boxing_cat.id)
+    sparring_gloves = Item(name='Sparring Gloves', description='Padded gloves for sparring', category_id=boxing_cat.id)
+    heavy_bag = Item(name='Heavy Bag', description='Bag used for training', category_id=boxing_cat.id)
 
     # Add Items
     session.add(helmet)
