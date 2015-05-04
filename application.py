@@ -43,11 +43,10 @@ def edit_item(item_id):
             item.name = request.form['name']
             item.description = request.form['description']
             item.category_id = category.id
-            session.commit()
-            return redirect(url_for('get_item', category.id, item.id))
+            return redirect(url_for('get_item', category_id=category.id, item_id=item.id))
     else:
-        # Todo: Create edit_item.html form
-        return render_template('edit_item.html', item=item)
+        categories = session.query(Category).all()
+        return render_template('edit_item.html', categories=categories, item=item)
 
 
 # Todo: Refactor this to use an id not a string
