@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1>Item Categories</h1>
+<nav>
+    <a href="{{ url_for('add_item')}}">Add New Item</a>
+</nav>
 {% for category in categories %}
 <div>
     <a href="{{ url_for('get_category_items', category_id=category.id) }}">{{category.name}} Items</a>
