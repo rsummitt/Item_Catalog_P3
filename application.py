@@ -49,11 +49,13 @@ def edit_item(item_id):
         return render_template('edit_item.html', categories=categories, item=item)
 
 
-# Todo: Refactor this to use an id not a string
-@app.route('/catalog/<string:item_name>/delete')
-def delete_item(item_name):
+@app.route('/catalog/<int:item_id>/delete')
+def delete_item(item_id):
     # Todo: Implement delete item
-    return 'Delete Item'
+    item = session.query(Item).filter_by(id=item_id).one()
+    category_id = item.category_id
+    session.delete(item)
+    return redirect(url_for('get_category_items', category_id=category_id))
 
 
 @app.route('/api/catalog.json')
