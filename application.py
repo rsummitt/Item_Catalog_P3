@@ -34,10 +34,9 @@ def get_item(category_id, item_id):
     return render_template('item.html', category=category, item=item)
 
 
-# Todo: Refactor this to use an id not a string
-@app.route('/catalog/<string:item_name>/edit', methods=['GET', 'POST'])
-def edit_item(item_name):
-    item = session.query(Item).filter_by(name=item_name).one()
+@app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
+def edit_item(item_id):
+    item = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and request.form['category']:
             category = session.query(Category).filter_by(id=request.form['category']).one()
