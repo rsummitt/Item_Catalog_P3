@@ -51,10 +51,10 @@ def edit_item(item_id):
 
 @app.route('/catalog/<int:item_id>/delete')
 def delete_item(item_id):
-    # Todo: Implement delete item
     item = session.query(Item).filter_by(id=item_id).one()
     category_id = item.category_id
     session.delete(item)
+    session.commit()
     return redirect(url_for('get_category_items', category_id=category_id))
 
 

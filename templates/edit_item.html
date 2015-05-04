@@ -5,6 +5,7 @@
     <title>Edit Item {{item.name}}</title>
 </head>
 <body>
+    <!-- Todo add validation -->
     <form action="{{ url_for('edit_item', item_id=item.id)}}" method="post">
         <div>
             <label for="name">Item Name:</label>
