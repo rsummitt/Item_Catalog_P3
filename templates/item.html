@@ -8,5 +8,6 @@
     <h1>{{item.name}}</h1>
     <div>Category: {{category.name}}</div>
     <div>Description: {{item.description}}</div>
+    <a href="{{ url_for('edit_item', item_id=item.id) }}">Edit Item</a>
 </body>
 </html>
