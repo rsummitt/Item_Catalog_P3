@@ -20,6 +20,14 @@ def get_catalog():
     return render_template('categories.html', categories=categories)
 
 
+@app.route('/catalog/<int:category_id>/delete')
+def delete_category(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    session.delete(category)
+    session.commit()
+    return redirect(url_for('get_catalog'))
+
+
 @app.route('/catalog/<int:category_id>/items')
 def get_category_items(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
