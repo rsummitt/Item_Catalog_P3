@@ -40,10 +40,12 @@ def edit_item(item_name):
     item = session.query(Item).filter_by(name=item_name).one()
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and request.form['category']:
+            category = session.query(Category).filter_by(id=request.form['category']).one()
             item.name = request.form['name']
             item.description = request.form['description']
-            item.category = request.form['category']
-            return redirect(url_for('get_catalog'))
+            item.category_id = category.id
+            session.commit()
+            return redirect(url_for('get_item', category.id, item.id))
     else:
         # Todo: Create edit_item.html form
         return render_template('edit_item.html', item=item)
