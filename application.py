@@ -20,13 +20,11 @@ def get_catalog():
     return render_template('categories.html', categories=categories)
 
 
-# Todo: Refactor this to use an id not a string
 @app.route('/catalog/<int:category_id>/items')
 def get_category_items(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     category_items = session.query(Item).filter_by(category_id=category.id).all()
     return render_template('category_items.html', category=category, category_items=category_items)
-    #return jsonify(Items=[i.serialize for i in category_items])
 
 
 # Todo: Refactor this to use an id not a string
