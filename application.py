@@ -43,6 +43,7 @@ def edit_item(item_id):
             item.name = request.form['name']
             item.description = request.form['description']
             item.category_id = category.id
+            session.commit()
             return redirect(url_for('get_item', category_id=category.id, item_id=item.id))
     else:
         categories = session.query(Category).all()
