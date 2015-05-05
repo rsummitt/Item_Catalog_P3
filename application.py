@@ -14,13 +14,13 @@ session = DBSession()
 
 
 @app.route('/')
-@app.route('/catalog')
+@app.route('/catalog/')
 def get_catalog():
     categories = session.query(Category).all()
     return render_template('categories.html', categories=categories)
 
 
-@app.route('/catalog/category/add', methods=['GET', 'POST'])
+@app.route('/catalog/category/add/', methods=['GET', 'POST'])
 def add_category():
     if request.method == 'POST':
         if request.form['name']:
@@ -32,7 +32,7 @@ def add_category():
         return render_template('add_category.html')
 
 
-@app.route('/catalog/<int:category_id>/delete')
+@app.route('/catalog/category/<int:category_id>/delete/')
 def delete_category(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     session.delete(category)
@@ -40,21 +40,21 @@ def delete_category(category_id):
     return redirect(url_for('get_catalog'))
 
 
-@app.route('/catalog/<int:category_id>/items')
+@app.route('/catalog/category/<int:category_id>/items/')
 def get_category_items(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     category_items = session.query(Item).filter_by(category_id=category.id).all()
     return render_template('category_items.html', category=category, category_items=category_items)
 
 
-@app.route('/catalog/<int:category_id>/<int:item_id>')
+@app.route('/catalog/category/<int:category_id>/item/<int:item_id>/')
 def get_item(category_id, item_id):
     category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Item).filter_by(category_id=category.id, id=item_id).one()
     return render_template('item.html', category=category, item=item)
 
 
-@app.route('/catalog/item/add', methods=['GET', 'POST'])
+@app.route('/catalog/item/add/', methods=['GET', 'POST'])
 def add_item():
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and request.form['category']:
@@ -68,7 +68,7 @@ def add_item():
         return render_template('add_item.html', categories=categories)
 
 
-@app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
+@app.route('/catalog/item/<int:item_id>/edit/', methods=['GET', 'POST'])
 def edit_item(item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
@@ -84,7 +84,7 @@ def edit_item(item_id):
         return render_template('edit_item.html', categories=categories, item=item)
 
 
-@app.route('/catalog/<int:item_id>/delete')
+@app.route('/catalog/item/<int:item_id>/delete/')
 def delete_item(item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     category_id = item.category_id
@@ -93,13 +93,13 @@ def delete_item(item_id):
     return redirect(url_for('get_category_items', category_id=category_id))
 
 
-@app.route('/api/catalog.json')
+@app.route('/api/catalog')
 def categories_json():
     categories = session.query(Category).all()
     results = []
     for c in categories:
         result = {'id': c.id, 'name': c.name, 'Items': []}
-        for i in session.query(Item).filter_by(category=c):
+        for i in session.query(Item).filter_by(category_id=c.id):
             result['Items'].append(i.serialize)
         results.append(result)
     return jsonify(Categories=results)
