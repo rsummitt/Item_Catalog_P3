@@ -14,20 +14,20 @@ DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
 
 client_id = "46a8d3ab8c19a99a4ba4"
-client_secret = "2e17f44c5b3ce05c3e4210ea3ae864ab61cdc0eb"
+client_secret = "49db7ea877757d64bab66bb632422bbdf20b7c0f"
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
 
-@app.before_first_request
-def session_setup():
-    session['oauth_state'] = None
-    session['oauth_token'] = None
+# @app.before_first_request
+# def session_setup():
+#     session['oauth_state'] = None
+#     session['oauth_token'] = None
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session['oauth_state'] is None or session['oauth_token'] is None:
+        if 'oauth_state' not in session or 'oauth_token' not in session:
             return redirect(url_for('login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
