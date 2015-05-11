@@ -1,10 +1,11 @@
-import os
 from database_setup import Base, Category, Item
 from flask import Flask, render_template, request, redirect, jsonify, url_for, session, g
 from functools import wraps
 from requests_oauthlib import OAuth2Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+import os
 
 app = Flask(__name__)
 
@@ -19,11 +20,6 @@ authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
 
-# @app.before_first_request
-# def session_setup():
-#     session['oauth_state'] = None
-#     session['oauth_token'] = None
-
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -33,7 +29,6 @@ def login_required(f):
     return decorated_function
 
 
-# Todo: Create a login endpoint
 @app.route('/login/')
 def login():
     github = OAuth2Session(client_id)
@@ -41,7 +36,7 @@ def login():
     session['oauth_state'] = state
     return redirect(authorization_url)
 
-# Todo: Create a github-callback
+
 @app.route('/github-callback')
 def github_callback():
     github = OAuth2Session(client_id, state=session['oauth_state'])
@@ -59,6 +54,7 @@ def get_catalog():
 
 
 @app.route('/catalog/category/add/', methods=['GET', 'POST'])
+@login_required
 def add_category():
     if request.method == 'POST':
         if request.form['name']:
@@ -71,6 +67,7 @@ def add_category():
 
 
 @app.route('/catalog/category/<int:category_id>/delete/')
+@login_required
 def delete_category(category_id):
     category = db_session.query(Category).filter_by(id=category_id).one()
     db_session.delete(category)
@@ -93,6 +90,7 @@ def get_item(category_id, item_id):
 
 
 @app.route('/catalog/item/add/', methods=['GET', 'POST'])
+@login_required
 def add_item():
     if request.method == 'POST':
         if request.form['name'] and request.form['description'] and request.form['category']:
@@ -107,6 +105,7 @@ def add_item():
 
 
 @app.route('/catalog/item/<int:item_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def edit_item(item_id):
     item = db_session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
@@ -123,6 +122,7 @@ def edit_item(item_id):
 
 
 @app.route('/catalog/item/<int:item_id>/delete/')
+@login_required
 def delete_item(item_id):
     item = db_session.query(Item).filter_by(id=item_id).one()
     category_id = item.category_id
