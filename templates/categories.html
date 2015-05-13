@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Item Catalog</title>
-</head>
-<body>
-<h1>Item Categories</h1>
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block header_title %}Categories{% endblock %}
+{% block content %}
 <nav>
     <a href="{{ url_for('add_item')}}">Add New Item</a>
     <a href="{{ url_for('add_category')}}">Add New Category</a>
@@ -15,6 +11,4 @@
     <a href="{{ url_for('get_category_items', category_id=category.id) }}">{{category.name}} Items</a>
 </div>
 {% endfor %}
-
-</body>
-</html>
+{% endblock %}

@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Add Category{% endblock %}
+{% block header_title %}Add Category{% endblock %}
+{% block content %}
 <!-- Todo add validation -->
-<form action="{{ url_for('add_category')}}" method="post">
-    <div>
-        <label for="name">Category Name:</label>
-        <input type="text" id="name" name="name" placeholder="Category Name">
+<form class="form-horizontal" action="{{ url_for('add_category')}}" method="post">
+    <div class="form-group">
+        <label for="name" class="col-sm-2">Category Name:</label>
+        <div class="col-sm-5">
+            <input type="text" id="name" name="name" placeholder="Category Name">
+        </div>
     </div>
-    <button type="submit">Add Category</button>
+    <button type="submit" class="btn btn-primary">Add Category</button>
 </form>
-</body>
-</html>
+{% endblock %}
