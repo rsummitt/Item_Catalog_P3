@@ -1,3 +1,4 @@
+import httplib2
 from database_setup import Base, Category, Item
 from flask import Flask, render_template, request, redirect, jsonify, url_for, session, g
 from functools import wraps
@@ -19,6 +20,12 @@ client_secret = "49db7ea877757d64bab66bb632422bbdf20b7c0f"
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
+@app.before_request
+def get_user_info():
+    if 'oauth_state' in session and 'oauth_token' in session and 'user' not in g:
+        github = OAuth2Session(client_id, token=session['oauth_token'])
+        g.user = github.get('https://api.github.com/user').json()
+
 
 def login_required(f):
     @wraps(f)
@@ -37,17 +44,32 @@ def login():
     return redirect(authorization_url)
 
 
+@app.route('/logout/')
+def logout():
+
+    oauth_token = session['oauth_token']
+    access_token = oauth_token['access_token']
+    github = OAuth2Session(client_id, token=session['oauth_token'])
+    url = 'https://api.github.com/applications/%s/tokens/%s' % (client_id, access_token)
+    github.delete(url, auth=(client_id, client_secret))
+    del g.user
+    del session['oauth_state']
+    del session['oauth_token']
+
+    return redirect(url_for('get_catalog'))
+
+
 @app.route('/github-callback')
 def github_callback():
     github = OAuth2Session(client_id, state=session['oauth_state'])
     token = github.fetch_token(token_url, client_secret=client_secret, authorization_response=request.url)
     session['oauth_token'] = token
-    return redirect(url_for('get_catalog'))
+    return redirect(request.args.get('next') or
+                    url_for('get_catalog'))
 
 
 @app.route('/')
 @app.route('/catalog/')
-@login_required
 def get_catalog():
     categories = db_session.query(Category).all()
     return render_template('categories.html', categories=categories)
