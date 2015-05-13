@@ -7,15 +7,12 @@
     <title>{% block title %}{% endblock %} - Item Catalog</title>
 </head>
 <body>
-<!-- Todo: Add a header block-->
-<div class="page-header">
-    <h1>{% block header_title %}{% endblock %}</h1>
-</div>
-
-<!-- Todo: Add a content block -->
-<div id="content">{% block content %}{% endblock %}</div>
-
-<!-- Todo: Add a footer block-->
-<div>Footer</div>
+    <div class="container">
+        <div class="page-header">
+            <h1>{% block header_title %}{% endblock %}</h1>
+        </div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div>Footer</div>
+    </div>
 </body>
 </html>
