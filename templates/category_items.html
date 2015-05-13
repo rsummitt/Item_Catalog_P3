@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>{{category.name}}</title>
-</head>
-<body>
-<h1>{{category.name}}</h1>
+{% extends "base.html" %}
+{% block title %}{{category.name}}{% endblock %}
+{% block header_title %}{{category.name}}{% endblock %}
+{% block content %}
 <div>
     <a href="{{ url_for('delete_category', category_id=category.id) }}">Delete Category</a>
 </div>
@@ -15,5 +11,4 @@
         <a href="{{ url_for('get_item', category_id=category.id, item_id=item.id) }}">{{item.name}}</a>
     </div>
 {% endfor %}
-</body>
-</html>
+{% endblock %}
