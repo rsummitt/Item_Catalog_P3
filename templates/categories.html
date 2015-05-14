@@ -14,7 +14,7 @@
 <ul class="list-group">
     {% for category in categories %}
         <a href="{{ url_for('get_category_items', category_id=category.id) }}" class="list-group-item">
-            {{category.name}}
+            {{category.name}}<span class="badge">{{number_of_items(category.id)}}</span>
         </a>
     {% endfor %}
 </ul>

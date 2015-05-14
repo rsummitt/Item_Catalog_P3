@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="page-header">
-            <h1>{% block header_title %}{% endblock %}</h1>
+            <h1>Item Catalog</h1>
             {% if 'user' in g %}
                 <div>Welcome {{g.user.name}}
                     <a href="{{ url_for('logout') }}" class="pull-right">LogOut</a>
