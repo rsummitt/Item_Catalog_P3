@@ -12,9 +12,9 @@
     <a href="{{ url_for('delete_category', category_id=category.id) }}">Delete Category</a>
 </div>
 
-{% for item in category_items %}
-    <div>
-        <a href="{{ url_for('get_item', category_id=category.id, item_id=item.id) }}">{{item.name}}</a>
-    </div>
-{% endfor %}
+<ul class="list-group">
+    {% for item in category_items %}
+            <a href="{{ url_for('get_item', category_id=category.id, item_id=item.id) }}" class="list-group-item">{{item.name}}</a>
+    {% endfor %}
+</ul>
 {% endblock %}
