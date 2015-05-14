@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Categories{% endblock %}
-{% block header_title %}Edit Item {{item.name}}{% endblock %}
 {% block breadcrumb %}
 <ul class="breadcrumb">
     <li><a href="{{ url_for('get_catalog') }}">Categories</a></li>
-    <li><a href="{{ url_for('get_category_items', category_id=item_category.id)}}">{{item_category.name}} Items</a></li>
-    <li class="active">Edit {{item.name}}</li>
+    <li><a href="{{ url_for('get_category_items', category_id=item_category.id)}}">{{item_category.name}}</a></li>
+    <li><a href="{{ url_for('get_item', category_id=item_category.id, item_id=item.id)}}">{{item.name}}</a></li>
+    <li class="active">Edit</li>
 </ul>
 {% endblock %}
 {% block content %}
