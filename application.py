@@ -1,4 +1,3 @@
-import httplib2
 from database_setup import Base, Category, Item
 from flask import Flask, render_template, request, redirect, jsonify, url_for, session, g
 from functools import wraps
@@ -166,7 +165,9 @@ def categories_json():
 
 
 if __name__ == '__main__':
+    # This is set to allow testing on HTTP
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
     app.debug = True
-    app.secret_key = "Dev Key"
+    app.secret_key = os.urandom(24)
     app.run(host='0.0.0.0', port=8080)
