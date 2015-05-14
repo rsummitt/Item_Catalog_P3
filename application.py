@@ -19,6 +19,14 @@ client_secret = "49db7ea877757d64bab66bb632422bbdf20b7c0f"
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
+
+@app.context_processor
+def utility_processor():
+    def number_of_items(category_id):
+        return db_session.query(Item).filter_by(category_id=category_id).count()
+    return dict(number_of_items=number_of_items)
+
+
 @app.before_request
 def get_user_info():
     if 'oauth_state' in session and 'oauth_token' in session and 'user' not in g:
