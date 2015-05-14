@@ -139,7 +139,9 @@ def edit_item(item_id):
             return redirect(url_for('get_item', category_id=category.id, item_id=item.id))
     else:
         categories = db_session.query(Category).all()
-        return render_template('edit_item.html', categories=categories, item=item)
+        item_category = db_session.query(Category).filter_by(id=item.category_id).one()
+        print item_category
+        return render_template('edit_item.html', categories=categories, item_category=item_category, item=item)
 
 
 @app.route('/catalog/item/<int:item_id>/delete/')

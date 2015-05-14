@@ -11,12 +11,16 @@
         <div class="page-header">
             <h1>{% block header_title %}{% endblock %}</h1>
             {% if 'user' in g %}
-            <div>Welcome {{g.user.name}}</div>
+                <div>Welcome {{g.user.name}}
+                    <a href="{{ url_for('logout') }}" class="pull-right">LogOut</a>
+                </div>
             {% else %}
-            <div>Welcome to the Item Catalog</div>
+                <div>Welcome to the Item Catalog
+                    <a href="{{ url_for('login') }}" class="pull-right">LogIn</a>
+                </div>
             {% endif %}
-            <a href="{{ url_for('logout') }}" class="btn btn-primary">LogOut</a>
         </div>
+        {% block breadcrumb %}{% endblock %}
         <div id="content">{% block content %}{% endblock %}</div>
         <div>Footer</div>
     </div>
