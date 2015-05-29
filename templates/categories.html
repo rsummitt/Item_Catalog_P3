@@ -6,10 +6,6 @@
 </ul>
 {% endblock %}
 {% block content %}
-<nav>
-    <a href="{{ url_for('add_item')}}">Add New Item</a>
-    <a href="{{ url_for('add_category')}}">Add New Category</a>
-</nav>
 <ul class="list-group">
     {% for category in categories %}
         <a href="{{ url_for('get_category_items', category_id=category.id) }}" class="list-group-item">
