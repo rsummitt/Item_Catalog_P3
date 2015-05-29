@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Categories{% endblock %}
-{% block header_title %}Categories{% endblock %}
+{% block breadcrumb %}
+<ul class="breadcrumb">
+    <li class="active">Categories</li>
+</ul>
+{% endblock %}
 {% block content %}
-<nav>
-    <a href="{{ url_for('add_item')}}">Add New Item</a>
-    <a href="{{ url_for('add_category')}}">Add New Category</a>
-</nav>
-{% for category in categories %}
-<div>
-    <a href="{{ url_for('get_category_items', category_id=category.id) }}">{{category.name}} Items</a>
-</div>
-{% endfor %}
+<ul class="list-group">
+    {% for category in categories %}
+        <a href="{{ url_for('get_category_items', category_id=category.id) }}" class="list-group-item">
+            {{category.name}}<span class="badge">{{number_of_items(category.id)}}</span>
+        </a>
+    {% endfor %}
+</ul>
 {% endblock %}

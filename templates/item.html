@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block title %}{{category.name}} - {{item.name}}{% endblock %}
-{% block header_title %}{{item.name}}{% endblock %}
+{% block breadcrumb %}
+<ul class="breadcrumb">
+    <li><a href="{{ url_for('get_catalog') }}">Categories</a></li>
+    <li><a href="{{ url_for('get_category_items', category_id=category.id)}}">{{category.name}}</a></li>
+    <li class="active">{{item.name}}</li>
+</ul>
+{% endblock %}
 {% block content %}
 <div>Category: {{category.name}}</div>
 <div>Description: {{item.description}}</div>

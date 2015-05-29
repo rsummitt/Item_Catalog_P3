@@ -19,6 +19,14 @@ client_secret = "49db7ea877757d64bab66bb632422bbdf20b7c0f"
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
+
+@app.context_processor
+def utility_processor():
+    def number_of_items(category_id):
+        return db_session.query(Item).filter_by(category_id=category_id).count()
+    return dict(number_of_items=number_of_items)
+
+
 @app.before_request
 def get_user_info():
     if 'oauth_state' in session and 'oauth_token' in session and 'user' not in g:
@@ -30,14 +38,15 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'oauth_state' not in session or 'oauth_token' not in session:
-            return redirect(url_for('login', next=request.url))
+            session['next_uri'] = request.path
+            return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
 
 
 @app.route('/login/')
 def login():
-    github = OAuth2Session(client_id)
+    github = OAuth2Session(client_id=client_id)
     authorization_url, state = github.authorization_url(authorization_base_url)
     session['oauth_state'] = state
     return redirect(authorization_url)
@@ -45,7 +54,6 @@ def login():
 
 @app.route('/logout/')
 def logout():
-
     oauth_token = session['oauth_token']
     access_token = oauth_token['access_token']
     github = OAuth2Session(client_id, token=session['oauth_token'])
@@ -63,8 +71,12 @@ def github_callback():
     github = OAuth2Session(client_id, state=session['oauth_state'])
     token = github.fetch_token(token_url, client_secret=client_secret, authorization_response=request.url)
     session['oauth_token'] = token
-    return redirect(request.args.get('next') or
-                    url_for('get_catalog'))
+    if 'next_uri' in session:
+        uri = session['next_uri']
+        del session['next_uri']
+        return redirect(uri, code=302)
+    else:
+        return redirect(url_for('get_catalog'))
 
 
 @app.route('/')
@@ -139,7 +151,8 @@ def edit_item(item_id):
             return redirect(url_for('get_item', category_id=category.id, item_id=item.id))
     else:
         categories = db_session.query(Category).all()
-        return render_template('edit_item.html', categories=categories, item=item)
+        item_category = db_session.query(Category).filter_by(id=item.category_id).one()
+        return render_template('edit_item.html', categories=categories, item_category=item_category, item=item)
 
 
 @app.route('/catalog/item/<int:item_id>/delete/')

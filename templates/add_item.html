@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Add Item{% endblock %}
-{% block header_title %}Add Item{% endblock %}
+{% block breadcrumb %}
+<ul class="breadcrumb">
+    <li><a href="{{ url_for('get_catalog') }}">Categories</a></li>
+    <li class="active">Add Item</li>
+</ul>
+{% endblock %}
 {% block content %}
 <!-- Todo add validation -->
 <form class="form-horizontal" action="{{ url_for('add_item')}}" method="post">
