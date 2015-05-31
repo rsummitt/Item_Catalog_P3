@@ -7,13 +7,13 @@
 </ul>
 {% endblock %}
 {% block content %}
-<div>
-    <a href="{{ url_for('delete_category', category_id=category.id) }}">Delete Category</a>
-</div>
 
 <ul class="list-group">
     {% for item in category_items %}
             <a href="{{ url_for('get_item', category_id=category.id, item_id=item.id) }}" class="list-group-item">{{item.name}}</a>
     {% endfor %}
 </ul>
+<div>
+    <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn btn-danger">Delete this Category</a>
+</div>
 {% endblock %}
