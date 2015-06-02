@@ -10,29 +10,31 @@
 </head>
 <body>
     <div class="container">
-        <div class="page-header">
+        <div class="page-header clearfix">
             <h1>Item Catalog</h1>
             {% if 'user' in g %}
                 <div>Welcome {{g.user.name}}
-                    <a href="{{ url_for('logout') }}" class="pull-right">Logout</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger pull-right">Logout</a>
                 </div>
             {% else %}
                 <div>Welcome to the Item Catalog
-                    <a href="{{ url_for('login') }}" class="pull-right">Login</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-success pull-right">Login</a>
                 </div>
             {% endif %}
         </div>
         <div class="row">
            <div class="col-sm-12">
                {% block breadcrumb %}{% endblock %}
-               <div class="btn-group pull-right">
-                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                       Menu <span class="caret"></span>
-                   </button>
-                   <ul class="dropdown-menu" role="menu">
-                       <li><a href="{{ url_for('add_item')}}">Add New Item</a></li>
-                       <li><a href="{{ url_for('add_category')}}">Add New Category</a></li>
-                   </ul>
+               <div class="pull-right">
+                   <div class="btn-group">
+                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                           Menu <span class="caret"></span>
+                       </button>
+                       <ul class="dropdown-menu" role="menu">
+                           <li><a href="{{ url_for('add_item')}}">Add New Item</a></li>
+                           <li><a href="{{ url_for('add_category')}}">Add New Category</a></li>
+                       </ul>
+                   </div>
                </div>
            </div>
         </div>
